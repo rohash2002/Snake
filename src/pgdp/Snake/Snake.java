@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Point;
 import java.util.ArrayDeque;
 import java.util.Queue;
+import java.util.Random;
 
 public class Snake {
 
@@ -13,7 +14,7 @@ public class Snake {
 
 	public Snake() {
 		body = new ArrayDeque<>();
-		head = new SnakeHead(Color.cyan, new Point(0, 0));
+		head = new SnakeHead(Color.MAGENTA, new Point(0, 0));
 		apple = spawnApple();
 	}
 
@@ -29,31 +30,38 @@ public class Snake {
 	}
 
 	public Apple spawnApple() {
-		return null;
+		Random rand = new Random();
+		Point[] tmp = new Point[1];
+		do {
+			tmp[0] = new Point(rand.nextInt(15), rand.nextInt(12));
+		} while (body.stream().anyMatch(element -> element.getPosition().equals(tmp[0])));
+		return new Apple(tmp[0]);
 	}
 
 	private void moveHead() {
-
-		head.getPosition().x += Math.sin(Math.toRadians(head.getDirection()));
-		head.getPosition().y += Math.sin(Math.toRadians(head.getDirection()));
-
+//		head.getPosition().x += Math.sin(Math.toRadians(head.getDirection()));
+//		head.getPosition().y += Math.sin(Math.toRadians(head.getDirection()));
+		if(Math.abs(head.getDirection()-90)<0.05)
+			head.getPosition().y++;
+		else if(Math.abs(head.getDirection()-180)<0.05)
+			head.getPosition().x--;
+		else if(Math.abs(head.getDirection()-270)<0.05)
+			head.getPosition().y--;
+		else head.getPosition().x++;
+			
 	}
 
 	private void moveBody() {
-
 		body.add(new SnakeElement(Color.green, new Point(head.getPosition().x, head.getPosition().y)));
 		body.remove();
-
 	}
 
-	private void turnTo(double direction) {
-
+	public void turnTo(double direction) {
 		if (head.getDirection() + 180 == direction || head.getDirection() - 180 == direction) {
 			return;
 		} else
 			head.setDirection(direction);
 	}
-
 }
 
 class Apple {
@@ -68,6 +76,9 @@ class Apple {
 
 	public Point getPosition() {
 		return position;
+	}
+	public Color getColor() {
+		return color;
 	}
 
 }
