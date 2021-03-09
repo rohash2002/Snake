@@ -33,7 +33,7 @@ public class Snake {
 		Random rand = new Random();
 		Point[] tmp = new Point[1];
 		do {
-			tmp[0] = new Point(rand.nextInt(15), rand.nextInt(12));
+			tmp[0] = new Point(rand.nextInt(20), rand.nextInt(12));
 		} while (body.stream().anyMatch(element -> element.getPosition().equals(tmp[0])));
 		return new Apple(tmp[0]);
 	}
